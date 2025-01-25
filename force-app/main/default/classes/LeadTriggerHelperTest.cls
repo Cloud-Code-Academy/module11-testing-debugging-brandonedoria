@@ -1,32 +1,61 @@
 @IsTest
-public with sharing class LeadTriggerHandlerTest {
+public with sharing class LeadTriggerHelperTest {
     @IsTest
-    static void handleTitleNormalization_updateToVicePresident_expectSuccess() {
+    static void handleTitleNormalization_updateToCorrectTitle_expectSuccess() {
         // Arrange
         List<Lead> leadsToNormalize = new List<Lead>();
-        Integer randomNumberRange;
-        Integer randomNumber = Integer.valueOf(Math.random() * randomNumberRange);
 
-        for (Integer i = 0; i < 100 ; i++) {
-            leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = null));
-            leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'vp ' + i));
-            leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'v.p. ' + i));
-            leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'vice president ' + i));
+        List<String> testTitle = new List<String>{
+            '', 'vp', 'v.p.', 'vice president', 'mgr', 'manage', 'head of department', 'exec', 'chief', 'head', 'assist', 'deputy', 'jr'
+        };
+        // List<String> testEmail = new List<String>();
+        // List<String> testPhone = new List<String>();
+        // List<String> testIndustry = new List<String>();
+
+        for (Integer i = 0; i < 400; i++) {
+            Integer randomNumber = Integer.valueOf(Math.random() * testTitle.size());
+            leadsToNormalize.add(new Lead(
+                FirstName = 'George',
+                LastName = 'Costanza' + i,
+                Company = 'Vandelay Industries',
+                Title = testTitle[randomNumber]
+            ));
         }
+
+        // for (Integer i = 0; i < 100 ; i++) {
+        //     leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = ''));
+        //     leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'vp ' + i));
+        //     leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'v.p. ' + i));
+        //     leadsToNormalize.add(new Lead(FirstName = 'George', LastName = 'Costanza', Company = 'Vandelay Industries', Title = 'vice president ' + i));
+        // }
 
         // Act
         Test.startTest();
-        insert leadsToNormalize;
+        LeadTriggerHelper.handleTitleNormalization(leadsToNormalize);
         Test.stopTest();
 
         // Assert
         List<Lead> updatedLeads = [SELECT Id, Title FROM Lead WHERE Id IN :leadsToNormalize];
+
         for (Lead lead : updatedLeads) {
-            if (lead.Title != null) {
-                Assert.areEqual('Vice President', lead.Title, 'Title should be updated to Vice President');
-                // Assert.areNotEqual(leadsToNormalize.size(), updatedLeads.size(), 'Updated leads should be < Inserted leads');
+            if (lead.Title == null) {
+                Assert.areEqual(null, lead.Title, 'Lead Title should be null');
+            } else if (lead.Title.containsIgnoreCase('vp') || lead.Title.containsIgnoreCase('v.p.') || lead.Title.containsIgnoreCase('vice president')) {
+                Assert.areEqual('Vice President', lead.Title, 'Lead Title should be Vice President');
+            } else if (lead.Title.containsIgnoreCase('mgr') || lead.Title.containsIgnoreCase('manage') || lead.Title.containsIgnoreCase('head of department')) {
+                Assert.areEqual('Manager', lead.Title, 'Lead Title should be Manager');
+            } else if (lead.Title.containsIgnoreCase('exec') || lead.Title.containsIgnoreCase('chief') || lead.Title.containsIgnoreCase('head')) {
+                Assert.areEqual('Executive', lead.Title, 'Lead Title should be Executive');
+            } else if (lead.Title.containsIgnoreCase('assist') || lead.Title.containsIgnoreCase('deputy') || lead.Title.containsIgnoreCase('jr')) {
+                Assert.areEqual('Assistant', lead.Title, 'Lead Title should be Assistant');
             }
         }
+
+        // for (Lead lead : updatedLeads) {
+        //     if (lead.Title != null) {
+        //         Assert.areEqual('Vice President', lead.Title, 'Title should be updated to Vice President');
+        //     }
+        // }
     }
 
     @IsTest
