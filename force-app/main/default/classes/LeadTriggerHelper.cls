@@ -31,27 +31,29 @@ public with sharing class LeadTriggerHelper {
 	 *   change the title to 'Assistant'.
 	 */
 	public static void handleTitleNormalization(List<Lead> leadsToNormalize) {
-		for (Lead ld : leadsToNormalize) {
-			if (
-				ld.title.containsIgnoreCase('vp') || 
-				ld.title.containsIgnoreCase('v.p.') ||
-				ld.title.containsIgnoreCase('vice president')) {
-				ld.Title = 'Vice President';
+		for (Lead lead : leadsToNormalize) {
+			if (lead.Title == '') {
+				continue;
 			} else if (
-				ld.title.containsIgnoreCase('mgr') ||
-				ld.title.containsIgnoreCase('manage') ||
-				ld.title.containsIgnoreCase('head of department')) {
-				ld.Title = 'Manager';
+				lead.Title.containsIgnoreCase('vp') || 
+				lead.Title.containsIgnoreCase('v.p.') ||
+				lead.Title.containsIgnoreCase('vice president')) {
+				lead.Title = 'Vice President';
 			} else if (
-				ld.title.containsIgnoreCase('exec') ||
-				ld.title.containsIgnoreCase('chief') ||
-				ld.title.containsIgnoreCase('head')) {
-				ld.Title = 'Executive';
+				lead.Title.containsIgnoreCase('mgr') ||
+				lead.Title.containsIgnoreCase('manage') ||
+				lead.Title.containsIgnoreCase('head of department')) {
+				lead.Title = 'Manager';
 			} else if (
-				ld.title.containsIgnoreCase('assist') ||
-				ld.title.containsIgnoreCase('deputy') ||
-				ld.title.containsIgnoreCase('jr')) {
-				ld.Title = 'Assistant';
+				lead.Title.containsIgnoreCase('exec') ||
+				lead.Title.containsIgnoreCase('chief') ||
+				lead.Title.containsIgnoreCase('head')) {
+				lead.Title = 'Executive';
+			} else if (
+				lead.Title.containsIgnoreCase('assist') ||
+				lead.Title.containsIgnoreCase('deputy') ||
+				lead.Title.containsIgnoreCase('jr')) {
+				lead.Title = 'Assistant';
 			}
 		}
 	}
@@ -68,23 +70,23 @@ public with sharing class LeadTriggerHelper {
 	 * - If the lead belongs to the 'Technology' industry, increment score by another 10 points.
 	 */
 	public static void handleAutoLeadScoring(List<Lead> leadsToScore) {
-		for (Lead ld : leadsToScore) {
+		for (Lead lead : leadsToScore) {
 			Integer score = 0;
 
 			// Check and add points based on the specified conditions
-			if (ld.LeadSource == 'Website' && ld.Email != null) {
+			if (lead.LeadSource == 'Website' && lead.Email != null) {
 				score += 3;
 			}
 
-			if (ld.Phone != null) {
+			if (lead.Phone != null) {
 				score += 5;
 			}
 
-			if (ld.Industry == 'Technology') {
+			if (lead.Industry == 'Technology') {
 				score += 10;
 			}
 
-			ld.Lead_Score__c = score; // Set the computed score back to the lead
+			lead.Lead_Score__c = score; // Set the computed score back to the lead
 		}
 	}
 
