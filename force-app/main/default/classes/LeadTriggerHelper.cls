@@ -32,7 +32,7 @@ public with sharing class LeadTriggerHelper {
 	 */
 	public static void handleTitleNormalization(List<Lead> leadsToNormalize) {
 		for (Lead lead : leadsToNormalize) {
-			if (lead.Title == '') {
+			if (lead.Title == null) {
 				continue;
 			} else if (
 				lead.Title.containsIgnoreCase('vp') || 

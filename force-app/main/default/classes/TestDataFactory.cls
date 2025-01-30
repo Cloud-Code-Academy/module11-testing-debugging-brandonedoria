@@ -3,81 +3,143 @@ public with sharing class TestDataFactory {
 
     public static List<Lead> createLeads() {
         List<Lead> leadList = new List<Lead>();
+        Integer numberOfLeads = 400;
+
         List<String> testTitle = new List<String>{
-            'vp', 'v.p.', 'vice president', 'mgr', 'manage', 'head of department', 'exec', 'chief', 'head', 'assist', 'deputy', 'jr'
+            'vp', 'v.p.', 'vice president', 'mgr', 'manage', 'head of department', 'exec', 'chief', 'head', 'assist', 'deputy', 'jr', null
         };
 
-        for (Integer i = 0; i < 400; i++) {
+        List<String> testSource = new List<String>{
+            'Website', 'Phone Inquiry', 'Partner Referral', 'Purchased List', 'Other', null
+        };
+
+        List<String> testEmail = new List<String>();
+        for (Integer i = 0; i < testTitle.size() - 1; i++) {
+            testEmail.add('testEmail' + i + '@email.com');
+            if (i == testTitle.size() - 2) {
+                testEmail.add(null);
+            }
+        }
+
+        List<String> testPhone = new List<String>();
+        for (Integer i = 0; i < testTitle.size() - 1; i++) {
+            testPhone.add('+' + i + ' 123-456-789');
+            if (i == testTitle.size() - 2) {
+                testPhone.add(null);
+            }
+        }
+
+        List<String> testIndustry = new List<String>{
+            'Technology', 'Agriculture', 'Banking', 'Consulting', 'Engineering', 'Food & Beverage', 'Government', 'Hospitality', 'Insurance', 'Media', 'Not For Profit', 'Recreation', null
+        };
+
+        for (Integer i = 0; i < numberOfLeads; i++) {
             if (Math.mod(i, testTitle.size()) == 0) {
                 leadList.add(new Lead(
-                    FirstName = 'Jerry',
+                    FirstName = 'Jerry - 18',
                     LastName = 'Seinfeld' + i,
                     Company = 'Self-Employed',
-                    Title = testTitle[0]
+                    Title = 'vp',
+                    LeadSource = 'Website',
+                    Email = 'testEmail@email.com',
+                    Phone = '0123456789',
+                    Industry = 'Technology'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 1) {
                 leadList.add(new Lead(
-                    FirstName = 'George',
+                    FirstName = 'George - eight',
                     LastName = 'Costanza' + i,
                     Company = 'Vandelay Industries',
-                    Title = testTitle[1]
+                    Title = 'v.p.',
+                    LeadSource = 'Website',
+                    Email = 'testEmail@email.com',
+                    Phone = '0123456789',
+                    Industry = 'Agriculture'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 2) {
                 leadList.add(new Lead(
-                    FirstName = 'Elaine',
+                    FirstName = 'Elaine - three',
                     LastName = 'Benes' + i,
                     Company = 'J. Peterman Catalog',
-                    Title = testTitle[2]
+                    Title = 'vice president',
+                    LeadSource = 'Website',
+                    Email = 'testEmail@email.com',
+                    Phone = null,
+                    Industry = 'Agriculture'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 3) {
                 leadList.add(new Lead(
-                    FirstName = 'Cosmo',
+                    FirstName = 'Cosmo - 10',
                     LastName = 'Kramer' + i,
                     Company = 'Kramerica Industries',
-                    Title = testTitle[3]
+                    Title = 'mgr',
+                    LeadSource = 'Website',
+                    Email = null,
+                    Phone = null,
+                    Industry = 'Technology'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 4) {
                 leadList.add(new Lead(
-                    FirstName = 'Newman',
+                    FirstName = 'Hello - zero',
                     LastName = 'Newman' + i,
                     Company = 'United States Postal Service',
-                    Title = testTitle[4]
+                    Title = 'manage',
+                    LeadSource = 'Phone Inquiry',
+                    Email = 'testEmail@email.com',
+                    Phone = null,
+                    Industry = 'Agriculture'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 5) {
                 leadList.add(new Lead(
-                    FirstName = 'Morty',
+                    FirstName = 'Morty - zero',
                     LastName = 'Seinfeld' + i,
                     Company = 'Retired',
-                    Title = testTitle[5]
+                    Title = 'head of department',
+                    LeadSource = 'Website',
+                    Email = null,
+                    Phone = null,
+                    Industry = 'Agriculture'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 6) {
                 leadList.add(new Lead(
-                    FirstName = 'Helen',
+                    FirstName = 'Helen - five',
                     LastName = 'Seinfeld' + i,
                     Company = 'Retired',
-                    Title = testTitle[6]
+                    Title = 'exec',
+                    LeadSource = 'Phone Inquiry',
+                    Email = null,
+                    Phone = '0123456789',
+                    Industry = 'Agriculture'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 7) {
                 leadList.add(new Lead(
-                    FirstName = 'Frank',
+                    FirstName = 'Frank - 13',
                     LastName = 'Costanza' + i,
                     Company = 'Retired',
-                    Title = testTitle[7]
+                    Title = 'chief',
+                    LeadSource = 'Website',
+                    Email = 'testEmail@email.com',
+                    Phone = null,
+                    Industry = 'Technology'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 8) {
                 leadList.add(new Lead(
-                    FirstName = 'Estelle',
+                    FirstName = 'Estelle - 15',
                     LastName = 'Costanza' + i,
                     Company = 'Retired',
-                    Title = testTitle[8]
+                    Title = 'head',
+                    LeadSource = 'Phone Inquiry',
+                    Email = null,
+                    Phone = '0123456789',
+                    Industry = 'Technology'
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 9) {
@@ -85,33 +147,49 @@ public with sharing class TestDataFactory {
                     FirstName = 'Uncle',
                     LastName = 'Leo' + i,
                     Company = 'Retired',
-                    Title = testTitle[9]
+                    Title = 'assist',
+                    LeadSource = null,
+                    Email = null,
+                    Phone = null,
+                    Industry = null
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 10) {
                 leadList.add(new Lead(
                     FirstName = 'David',
                     LastName = 'Puddy' + i,
-                    Company = 'Car Dealership',
-                    Title = testTitle[10]
+                    Company = 'Pep Boys',
+                    Title = 'deputy',
+                    LeadSource = null,
+                    Email = null,
+                    Phone = null,
+                    Industry = null
                 ));
             }
             if (Math.mod(i, testTitle.size()) == 11) {
                 leadList.add(new Lead(
                     FirstName = 'Tim',
                     LastName = 'Whatley' + i,
-                    Company = 'Dentist',
-                    Title = testTitle[11]
+                    Company = 'Gentle Dental',
+                    Title = 'jr',
+                    LeadSource = null,
+                    Email = null,
+                    Phone = null,
+                    Industry = null
                 ));
             }
-            // if (Math.mod(i, testTitle.size()) == 12) {
-            //     leadList.add(new Lead(
-            //         FirstName = 'Jackie',
-            //         LastName = 'Chiles' + i,
-            //         Company = 'Lawyer',
-            //         Title = testTitle[12]
-            //     ));
-            // }
+            if (Math.mod(i, testTitle.size()) == 12) {
+                leadList.add(new Lead(
+                    FirstName = 'Jackie - null',
+                    LastName = 'Chiles' + i,
+                    Company = 'The Chiles Firm',
+                    Title = null,
+                    LeadSource = null,
+                    Email = null,
+                    Phone = null,
+                    Industry = null
+                ));
+            }
         }
         return leadList;
     }
