@@ -1,6 +1,6 @@
 public with sharing class TestDataFactory {
 
-    public static List<Lead> createLeads() {
+    public static List<Lead> createUniqueLeads() {
         List<Lead> leadList = new List<Lead>();
         Integer numberOfLeads = 400;
         Integer uniqueLeads = 12;
@@ -168,7 +168,7 @@ public with sharing class TestDataFactory {
 
     public static List<Account> createAccounts() {
         List<Account> accountList = new List<Account>();
-        Integer numberOfAccounts = 1;
+        Integer numberOfAccounts = 400;
         for (Integer i = 0; i < numberOfAccounts; i++) {
             accountList.add(new Account(
                 Name = 'The Pensky Files' + i
@@ -179,7 +179,7 @@ public with sharing class TestDataFactory {
 
     public static List<Contact> createContacts(List<Account> insertedAccounts) {
         List<Contact> contactList = new List<Contact>();
-        Integer numberOfContacts = 1;
+        Integer numberOfContacts = 400;
         List<Account> accountList = insertedAccounts;
 
         for (Integer i = 0; i < numberOfContacts; i++) {
@@ -193,9 +193,9 @@ public with sharing class TestDataFactory {
         return contactList;
     }
 
-    public static List<Lead> createLead() {
+    public static List<Lead> createSimilarLeads() {
         List<Lead> leadList = new List<Lead>();
-        Integer numberOfLeads = 1;
+        Integer numberOfLeads = 400;
 
         for (Integer i = 0; i < numberOfLeads; i++) {
             leadList.add(new Lead(

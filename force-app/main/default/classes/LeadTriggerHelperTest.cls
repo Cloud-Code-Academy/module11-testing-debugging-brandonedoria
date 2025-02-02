@@ -3,7 +3,7 @@ public with sharing class LeadTriggerHelperTest {
     @IsTest
     static void handleTitleNormalization_updateToCorrectTitle_expectSuccess() {
         // Arrange
-        List<Lead> leadsToNormalize = TestDataFactory.createLeads();
+        List<Lead> leadsToNormalize = TestDataFactory.createUniqueLeads();
 
         // Act
         Test.startTest();
@@ -36,7 +36,7 @@ public with sharing class LeadTriggerHelperTest {
     @IsTest
     static void handleAutoLeadScoring_leadScoreUpdated_expectSuccess () {
         // Arrange
-        List<Lead> leadsToScore = TestDataFactory.createLeads();
+        List<Lead> leadsToScore = TestDataFactory.createUniqueLeads();
 
         // Act
         Test.startTest();
@@ -76,7 +76,7 @@ public with sharing class LeadTriggerHelperTest {
         List<Contact> contactList = TestDataFactory.createContacts(accountList);
         insert contactList;
 
-        List<Lead> leadsToConvert = TestDataFactory.createLead();
+        List<Lead> leadsToConvert = TestDataFactory.createSimilarLeads();
 
         // Act
         Test.startTest();
@@ -97,17 +97,19 @@ public with sharing class LeadTriggerHelperTest {
         List<Account> accountList = TestDataFactory.createAccounts();
         insert accountList;
 
-        List<Contact> contactList = TestDataFactory.createContacts(accountList);
+        List<Contact> contactList = new List<Contact>();
+
+        contactList.add(TestDataFactory.createContacts(accountList)[0]);
         contactList.add(new Contact(
             FirstName = 'Jerry',
             LastName = 'Seinfeld',
-            AccountId = accountList[0].Id,
+            AccountId = contactList[0].Id,
             Email = contactList[0].Email
             ));
 
         insert contactList;
 
-        List<Lead> leadsToConvert = TestDataFactory.createLead();
+        List<Lead> leadsToConvert = TestDataFactory.createSimilarLeads();
 
         // Act
         Test.startTest();
@@ -116,7 +118,7 @@ public with sharing class LeadTriggerHelperTest {
 
         // Assert
         List<Lead> updatedLeads = [SELECT Id, IsConverted FROM Lead WHERE Id IN :leadsToConvert];
-        Assert.isTrue(updatedLeads.size() > 0, 'Lead should not be empty');
+        Assert.isTrue(updatedLeads.size() > 0, 'List should not be empty');
         for (Lead lead : updatedLeads) {
             Assert.isFalse(lead.IsConverted, 'Lead should not be converted');
         }
