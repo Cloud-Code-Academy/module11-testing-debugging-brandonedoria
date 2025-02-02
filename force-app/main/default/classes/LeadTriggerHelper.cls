@@ -117,7 +117,9 @@ public with sharing class LeadTriggerHelper {
 		// Step 1: Gather all lead emails
         Map<Id,String> leadToEmailMap = new Map<Id,String>();
 		for (Lead lead : leads) {
-			leadToEmailMap.put(lead.Id, lead.Email);
+			if (lead.Email != null) {
+				leadToEmailMap.put(lead.Id, lead.Email);
+			}
 		}
 
 		// Step 2: Find matching contacts based on email
@@ -135,8 +137,9 @@ public with sharing class LeadTriggerHelper {
 		// Step 3: Auto-convert leads
 		List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
 		LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = TRUE LIMIT 1];
+		
 		for (Id leadId : leadToEmailMap.keySet()) {
-            String leadEmail = leadToEmailMap.get(leadId);
+			String leadEmail = leadToEmailMap.get(leadId);
 			if (emailToContactMap.containsKey(leadEmail)) {
 				Database.LeadConvert lc = new Database.LeadConvert();
 				lc.setLeadId(leadId);

@@ -1,42 +1,14 @@
 public with sharing class TestDataFactory {
 
-
     public static List<Lead> createLeads() {
         List<Lead> leadList = new List<Lead>();
         Integer numberOfLeads = 400;
-
-        List<String> testTitle = new List<String>{
-            'vp', 'v.p.', 'vice president', 'mgr', 'manage', 'head of department', 'exec', 'chief', 'head', 'assist', 'deputy', 'jr', null
-        };
-
-        List<String> testSource = new List<String>{
-            'Website', 'Phone Inquiry', 'Partner Referral', 'Purchased List', 'Other', null
-        };
-
-        List<String> testEmail = new List<String>();
-        for (Integer i = 0; i < testTitle.size() - 1; i++) {
-            testEmail.add('testEmail' + i + '@email.com');
-            if (i == testTitle.size() - 2) {
-                testEmail.add(null);
-            }
-        }
-
-        List<String> testPhone = new List<String>();
-        for (Integer i = 0; i < testTitle.size() - 1; i++) {
-            testPhone.add('+' + i + ' 123-456-789');
-            if (i == testTitle.size() - 2) {
-                testPhone.add(null);
-            }
-        }
-
-        List<String> testIndustry = new List<String>{
-            'Technology', 'Agriculture', 'Banking', 'Consulting', 'Engineering', 'Food & Beverage', 'Government', 'Hospitality', 'Insurance', 'Media', 'Not For Profit', 'Recreation', null
-        };
+        Integer uniqueLeads = 12;
 
         for (Integer i = 0; i < numberOfLeads; i++) {
-            if (Math.mod(i, testTitle.size()) == 0) {
+            if (Math.mod(i, uniqueLeads) == 0) {
                 leadList.add(new Lead(
-                    FirstName = 'Jerry - 18',
+                    FirstName = 'Jerry',
                     LastName = 'Seinfeld' + i,
                     Company = 'Self-Employed',
                     Title = 'vp',
@@ -46,9 +18,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Technology'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 1) {
+            if (Math.mod(i, uniqueLeads) == 1) {
                 leadList.add(new Lead(
-                    FirstName = 'George - eight',
+                    FirstName = 'George',
                     LastName = 'Costanza' + i,
                     Company = 'Vandelay Industries',
                     Title = 'v.p.',
@@ -58,9 +30,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Agriculture'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 2) {
+            if (Math.mod(i, uniqueLeads) == 2) {
                 leadList.add(new Lead(
-                    FirstName = 'Elaine - three',
+                    FirstName = 'Elaine',
                     LastName = 'Benes' + i,
                     Company = 'J. Peterman Catalog',
                     Title = 'vice president',
@@ -70,9 +42,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Agriculture'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 3) {
+            if (Math.mod(i, uniqueLeads) == 3) {
                 leadList.add(new Lead(
-                    FirstName = 'Cosmo - 10',
+                    FirstName = 'Cosmo',
                     LastName = 'Kramer' + i,
                     Company = 'Kramerica Industries',
                     Title = 'mgr',
@@ -82,9 +54,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Technology'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 4) {
+            if (Math.mod(i, uniqueLeads) == 4) {
                 leadList.add(new Lead(
-                    FirstName = 'Hello - zero',
+                    FirstName = 'Hello',
                     LastName = 'Newman' + i,
                     Company = 'United States Postal Service',
                     Title = 'manage',
@@ -94,9 +66,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Agriculture'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 5) {
+            if (Math.mod(i, uniqueLeads) == 5) {
                 leadList.add(new Lead(
-                    FirstName = 'Morty - zero',
+                    FirstName = 'Morty',
                     LastName = 'Seinfeld' + i,
                     Company = 'Retired',
                     Title = 'head of department',
@@ -106,9 +78,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Agriculture'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 6) {
+            if (Math.mod(i, uniqueLeads) == 6) {
                 leadList.add(new Lead(
-                    FirstName = 'Helen - five',
+                    FirstName = 'Helen',
                     LastName = 'Seinfeld' + i,
                     Company = 'Retired',
                     Title = 'exec',
@@ -118,9 +90,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Agriculture'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 7) {
+            if (Math.mod(i, uniqueLeads) == 7) {
                 leadList.add(new Lead(
-                    FirstName = 'Frank - 13',
+                    FirstName = 'Frank',
                     LastName = 'Costanza' + i,
                     Company = 'Retired',
                     Title = 'chief',
@@ -130,9 +102,9 @@ public with sharing class TestDataFactory {
                     Industry = 'Technology'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 8) {
+            if (Math.mod(i, uniqueLeads) == 8) {
                 leadList.add(new Lead(
-                    FirstName = 'Estelle - 15',
+                    FirstName = 'Estelle',
                     LastName = 'Costanza' + i,
                     Company = 'Retired',
                     Title = 'head',
@@ -142,7 +114,7 @@ public with sharing class TestDataFactory {
                     Industry = 'Technology'
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 9) {
+            if (Math.mod(i, uniqueLeads) == 9) {
                 leadList.add(new Lead(
                     FirstName = 'Uncle',
                     LastName = 'Leo' + i,
@@ -154,7 +126,7 @@ public with sharing class TestDataFactory {
                     Industry = null
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 10) {
+            if (Math.mod(i, uniqueLeads) == 10) {
                 leadList.add(new Lead(
                     FirstName = 'David',
                     LastName = 'Puddy' + i,
@@ -166,7 +138,7 @@ public with sharing class TestDataFactory {
                     Industry = null
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 11) {
+            if (Math.mod(i, uniqueLeads) == 11) {
                 leadList.add(new Lead(
                     FirstName = 'Tim',
                     LastName = 'Whatley' + i,
@@ -178,9 +150,9 @@ public with sharing class TestDataFactory {
                     Industry = null
                 ));
             }
-            if (Math.mod(i, testTitle.size()) == 12) {
+            if (Math.mod(i, uniqueLeads) == 12) {
                 leadList.add(new Lead(
-                    FirstName = 'Jackie - null',
+                    FirstName = 'Jackie',
                     LastName = 'Chiles' + i,
                     Company = 'The Chiles Firm',
                     Title = null,
@@ -194,5 +166,48 @@ public with sharing class TestDataFactory {
         return leadList;
     }
 
+    public static List<Account> createAccounts() {
+        List<Account> accountList = new List<Account>();
+        Integer numberOfAccounts = 1;
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            accountList.add(new Account(
+                Name = 'The Pensky Files' + i
+            ));
+        }
+        return accountList;
+    }
+
+    public static List<Contact> createContacts(List<Account> insertedAccounts) {
+        List<Contact> contactList = new List<Contact>();
+        Integer numberOfContacts = 1;
+        List<Account> accountList = insertedAccounts;
+
+        for (Integer i = 0; i < numberOfContacts; i++) {
+            contactList.add(new Contact(
+                FirstName = 'Arthur',
+                LastName = 'Pensky' + i,
+                AccountId = accountList[i].Id,
+                Email = 'testEmail' + i + '@email.com'
+            ));
+        }
+        return contactList;
+    }
+
+    public static List<Lead> createLead() {
+        List<Lead> leadList = new List<Lead>();
+        Integer numberOfLeads = 1;
+
+        for (Integer i = 0; i < numberOfLeads; i++) {
+            leadList.add(new Lead(
+                FirstName = 'Jerry',
+                LastName = 'Seinfeld' + i,
+                Company = 'Self-Employed',
+                Title = 'vp',
+                LeadSource = 'Website',
+                Email = 'testEmail' + i + '@email.com'
+            ));
+        }
+        return leadList;
+    }
 
 }

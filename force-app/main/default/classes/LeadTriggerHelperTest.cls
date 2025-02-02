@@ -7,16 +7,11 @@ public with sharing class LeadTriggerHelperTest {
 
         // Act
         Test.startTest();
-        insert leadsToNormalize;
+        LeadTriggerHelper.handleTitleNormalization(leadsToNormalize);
         Test.stopTest();
 
         // Assert
-        List<Id> idList = new List<Id>();
-        for (Lead lead : leadsToNormalize) {
-            idList.add(lead.Id);
-        }
-
-        List<Lead> updatedLeads = [SELECT Id, FirstName, Title FROM Lead WHERE Id IN :idList];
+        List<Lead> updatedLeads = [SELECT Id, FirstName, Title FROM Lead WHERE Id IN :leadsToNormalize];
 
         for (Lead lead : updatedLeads) {
             if (lead.Title == null) {
@@ -41,57 +36,89 @@ public with sharing class LeadTriggerHelperTest {
     @IsTest
     static void handleAutoLeadScoring_leadScoreUpdated_expectSuccess () {
         // Arrange
-        List<Lead> leadsToNormalize = TestDataFactory.createLeads();
+        List<Lead> leadsToScore = TestDataFactory.createLeads();
 
         // Act
         Test.startTest();
-        insert leadsToNormalize;
+        LeadTriggerHelper.handleAutoLeadScoring(leadsToScore);
         Test.stopTest();
 
         // Assert
-        List<Id> idList = new List<Id>();
-        for (Lead lead : leadsToNormalize) {
-            idList.add(lead.Id);
-        }
+        List<Lead> updatedLeads = [SELECT Id, Lead_Score__c, Industry, Phone, LeadSource, Email FROM Lead WHERE Id IN :leadsToScore];
 
-        List<Lead> updatedLeads = [SELECT Id, FirstName, Lead_Score__c FROM Lead WHERE Id IN :idList];
         for (Lead lead : updatedLeads) {
-            if (lead.FirstName.containsIgnoreCase('18')) {
-                Assert.areEqual(18, lead.Lead_Score__c, 'Lead score should be 18');
-            }
-            if (lead.FirstName.containsIgnoreCase('eight')) {
-                Assert.areEqual(8, lead.Lead_Score__c, 'Lead score should be 8');
-            }
-            if (lead.FirstName.containsIgnoreCase('three')) {
-                Assert.areEqual(3, lead.Lead_Score__c, 'Lead score should be 3');
-            }
-            if (lead.FirstName.containsIgnoreCase('10')) {
-                Assert.areEqual(10, lead.Lead_Score__c, 'Lead score should be 10');
-            }
-            if (lead.FirstName.containsIgnoreCase('zero')) {
-                Assert.areEqual(0, lead.Lead_Score__c, 'Lead score should be 0');
-            }
-            if (lead.FirstName.containsIgnoreCase('five')) {
-                Assert.areEqual(5, lead.Lead_Score__c, 'Lead score should be 5');
-            }
-            if (lead.FirstName.containsIgnoreCase('13')) {
-                Assert.areEqual(13, lead.Lead_Score__c, 'Lead score should be 13');
-            }
-            if (lead.FirstName.containsIgnoreCase('15')) {
-                Assert.areEqual(15, lead.Lead_Score__c, 'Lead score should be 15');
-            }
-            if (lead.FirstName.containsIgnoreCase('null')) {
-                Assert.areEqual(0, lead.Lead_Score__c, 'Lead score should be 0');
+            if (lead.Industry == 'Technology' && lead.Phone != null && lead.LeadSource == 'Website' && lead.Email != null) {
+                Assert.areEqual(18, lead.Lead_Score__c, 'Lead Score should be 18');
+            } else if (lead.Industry == 'Technology' && lead.Phone != null) {
+                Assert.areEqual(15, lead.Lead_Score__c, 'Lead Score should be 15');
+            } else if(lead.Industry == 'Technology' && lead.LeadSource == 'Website' && lead.Email != null) {
+                Assert.areEqual(13, lead.Lead_Score__c, 'Lead Score should be 13');
+            } else if (lead.Industry == 'Technology') {
+                Assert.areEqual(10, lead.Lead_Score__c, 'Lead Score should be 10');
+            } else if (lead.Phone != null && lead.LeadSource == 'Website' && lead.Email != null) {
+                Assert.areEqual(8, lead.Lead_Score__c, 'Lead Score should be 8');
+            } else if (lead.Phone != null) {
+                Assert.areEqual(5, lead.Lead_Score__c, 'Lead Score should be 5');
+            } else if (lead.LeadSource == 'Website' && lead.Email != null) {
+                Assert.areEqual(3, lead.Lead_Score__c, 'Lead Score should be 3');
+            } else {
+                Assert.areEqual(0, lead.Lead_Score__c, 'Lead Score should be 0');
             }
         }
-
-
-
-
     }
 
+    @IsTest
+    static void handleLeadAutoConvert_leadConvertedOnInsert_expectSuccess () {
+        // Arrange
+        List<Account> accountList = TestDataFactory.createAccounts();
+        insert accountList;
 
+        List<Contact> contactList = TestDataFactory.createContacts(accountList);
+        insert contactList;
 
+        List<Lead> leadsToConvert = TestDataFactory.createLead();
 
+        // Act
+        Test.startTest();
+        insert leadsToConvert;
+        Test.stopTest();
 
+        // Assert
+        List<Lead> updatedLeads = [SELECT Id, IsConverted FROM Lead WHERE Id IN :leadsToConvert];
+        Assert.isTrue(updatedLeads.size() > 0, 'List should not be empty');
+        for (Lead lead : updatedLeads) {
+            Assert.isTrue(lead.IsConverted, 'Lead should be converted');
+        }
+    }
+
+    @IsTest
+    static void handleLeadAutoConvert_leadConvertedOnInsert_expectNoConversion () {
+        // Arrange
+        List<Account> accountList = TestDataFactory.createAccounts();
+        insert accountList;
+
+        List<Contact> contactList = TestDataFactory.createContacts(accountList);
+        contactList.add(new Contact(
+            FirstName = 'Jerry',
+            LastName = 'Seinfeld',
+            AccountId = accountList[0].Id,
+            Email = contactList[0].Email
+            ));
+
+        insert contactList;
+
+        List<Lead> leadsToConvert = TestDataFactory.createLead();
+
+        // Act
+        Test.startTest();
+        insert leadsToConvert;
+        Test.stopTest();
+
+        // Assert
+        List<Lead> updatedLeads = [SELECT Id, IsConverted FROM Lead WHERE Id IN :leadsToConvert];
+        Assert.isTrue(updatedLeads.size() > 0, 'Lead should not be empty');
+        for (Lead lead : updatedLeads) {
+            Assert.isFalse(lead.IsConverted, 'Lead should not be converted');
+        }
+    }
 }
