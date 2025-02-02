@@ -42,7 +42,7 @@ public with sharing class LeadTriggerHandler extends TriggerHandler {
 		LeadTriggerHelper.handleLeadAutoConvert(newLeads);
 	}
 
-	public override void afterUpdate() {
-		LeadTriggerHelper.handleLeadAutoConvert(newLeads);
-	}
+	// public override void afterUpdate() {
+	// 	LeadTriggerHelper.handleLeadAutoConvert(newLeads);
+	// }
 }
