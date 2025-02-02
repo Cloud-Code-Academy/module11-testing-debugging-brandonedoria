@@ -136,7 +136,7 @@ public with sharing class LeadTriggerHelper {
 
 		// Step 3: Auto-convert leads
 		List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
-		LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = TRUE LIMIT 1];
+		LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = TRUE];
 		
 		for (Id leadId : leadToEmailMap.keySet()) {
 			String leadEmail = leadToEmailMap.get(leadId);
