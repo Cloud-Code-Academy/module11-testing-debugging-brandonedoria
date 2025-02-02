@@ -100,12 +100,7 @@ public with sharing class LeadTriggerHelperTest {
         List<Contact> contactList = new List<Contact>();
 
         contactList.add(TestDataFactory.createContacts(accountList)[0]);
-        contactList.add(new Contact(
-            FirstName = 'Jerry',
-            LastName = 'Seinfeld',
-            AccountId = contactList[0].Id,
-            Email = contactList[0].Email
-            ));
+        contactList.add(TestDataFactory.createContacts(accountList)[0]);
 
         insert contactList;
 
