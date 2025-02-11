@@ -1,9 +1,7 @@
 public with sharing class TestDataFactory {
 
-    public static List<Lead> createUniqueLeads() {
+    public static List<Lead> createLeads(Integer numberOfLeads, Integer uniqueLeads) {
         List<Lead> leadList = new List<Lead>();
-        Integer numberOfLeads = 400;
-        Integer uniqueLeads = 12;
 
         for (Integer i = 0; i < numberOfLeads; i++) {
             if (Math.mod(i, uniqueLeads) == 0) {
@@ -13,7 +11,7 @@ public with sharing class TestDataFactory {
                     Company = 'Self-Employed',
                     Title = 'vp',
                     LeadSource = 'Website',
-                    Email = 'testEmail@email.com',
+                    Email = 'testEmail' + i + '@email.com',
                     Phone = '0123456789',
                     Industry = 'Technology'
                 ));
@@ -25,7 +23,7 @@ public with sharing class TestDataFactory {
                     Company = 'Vandelay Industries',
                     Title = 'v.p.',
                     LeadSource = 'Website',
-                    Email = 'testEmail@email.com',
+                    Email = 'testEmail' + i + '@email.com',
                     Phone = '0123456789',
                     Industry = 'Agriculture'
                 ));
@@ -37,7 +35,7 @@ public with sharing class TestDataFactory {
                     Company = 'J. Peterman Catalog',
                     Title = 'vice president',
                     LeadSource = 'Website',
-                    Email = 'testEmail@email.com',
+                    Email = 'testEmail' + i + '@email.com',
                     Phone = null,
                     Industry = 'Agriculture'
                 ));
@@ -61,7 +59,7 @@ public with sharing class TestDataFactory {
                     Company = 'United States Postal Service',
                     Title = 'manage',
                     LeadSource = 'Phone Inquiry',
-                    Email = 'testEmail@email.com',
+                    Email = 'testEmail' + i + '@email.com',
                     Phone = null,
                     Industry = 'Agriculture'
                 ));
@@ -97,7 +95,7 @@ public with sharing class TestDataFactory {
                     Company = 'Retired',
                     Title = 'chief',
                     LeadSource = 'Website',
-                    Email = 'testEmail@email.com',
+                    Email = 'testEmail' + i + '@email.com',
                     Phone = null,
                     Industry = 'Technology'
                 ));
@@ -166,9 +164,9 @@ public with sharing class TestDataFactory {
         return leadList;
     }
 
-    public static List<Account> createAccounts() {
+    public static List<Account> createAccounts(Integer numberOfAccounts) {
         List<Account> accountList = new List<Account>();
-        Integer numberOfAccounts = 400;
+
         for (Integer i = 0; i < numberOfAccounts; i++) {
             accountList.add(new Account(
                 Name = 'The Pensky Files' + i
@@ -177,9 +175,9 @@ public with sharing class TestDataFactory {
         return accountList;
     }
 
-    public static List<Contact> createContacts(List<Account> insertedAccounts) {
+    public static List<Contact> createContacts(List<Account> insertedAccounts, Integer numberOfContacts) {
         List<Contact> contactList = new List<Contact>();
-        Integer numberOfContacts = 400;
+
         List<Account> accountList = insertedAccounts;
 
         for (Integer i = 0; i < numberOfContacts; i++) {
@@ -192,22 +190,4 @@ public with sharing class TestDataFactory {
         }
         return contactList;
     }
-
-    public static List<Lead> createSimilarLeads() {
-        List<Lead> leadList = new List<Lead>();
-        Integer numberOfLeads = 400;
-
-        for (Integer i = 0; i < numberOfLeads; i++) {
-            leadList.add(new Lead(
-                FirstName = 'Jerry',
-                LastName = 'Seinfeld' + i,
-                Company = 'Self-Employed',
-                Title = 'vp',
-                LeadSource = 'Website',
-                Email = 'testEmail' + i + '@email.com'
-            ));
-        }
-        return leadList;
-    }
-
 }
