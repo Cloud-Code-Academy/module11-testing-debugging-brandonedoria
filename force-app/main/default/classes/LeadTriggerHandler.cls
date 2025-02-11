@@ -39,10 +39,10 @@ public with sharing class LeadTriggerHandler extends TriggerHandler {
 	}
 
 	public override void afterInsert() {
-		LeadTriggerHelper.handleLeadAutoConvert(newLeads);
+			LeadTriggerHelper.handleLeadAutoConvert(newLeads);
 	}
 
 	// public override void afterUpdate() {
-	// 	LeadTriggerHelper.handleLeadAutoConvert(newLeads); // NOTE: couldn't figure out how to implement the afterUpdate without causing a recursion error
+	// LeadTriggerHelper.handleLeadAutoConvert(newLeads); // NOTE: couldn't figure out how to implement the afterUpdate without causing a recursion error
 	// }
 }
