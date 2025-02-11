@@ -116,4 +116,34 @@ public with sharing class LeadTriggerHelperTest {
             Assert.isFalse(lead.IsConverted, 'Lead should not be converted');
         }
     }
+
+    @IsTest
+    static void handleLeadAutoConvert_leadConvertedOnUpdate_expectSuccess () {
+        // Arrange
+        List<Account> accountList = TestDataFactory.createAccounts(400);
+        insert accountList;
+
+        List<Contact> contactList = TestDataFactory.createContacts(accountList, 400);
+        insert contactList;
+
+        List<Lead> leadsToConvert = TestDataFactory.createLeads(400, 13);
+        insert leadsToConvert;
+
+        List<Lead> leadsToUpdate = [SELECT Id, Email FROM Lead WHERE Id IN :leadsToConvert];
+        for (Lead lead : leadsToUpdate) {
+            lead.Email = 'testEmail' + lead.Id + '@email.com';
+        }
+
+        // Act
+        Test.startTest();
+        update leadsToUpdate;
+        Test.stopTest();
+
+        // Assert
+        List<Lead> updatedLeads = [SELECT Id, IsConverted FROM Lead WHERE Id IN :leadsToConvert AND IsConverted = TRUE];
+        Assert.isTrue(updatedLeads.size() > 0, 'List should not be empty');
+        for (Lead lead : updatedLeads) {
+            Assert.isTrue(lead.IsConverted, 'Lead should be converted');
+        }
+    }
 }
